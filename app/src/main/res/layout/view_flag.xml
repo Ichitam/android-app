@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <FrameLayout
         android:id="@+id/mention_flag_layout"
@@ -39,7 +41,7 @@
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/down_flag"

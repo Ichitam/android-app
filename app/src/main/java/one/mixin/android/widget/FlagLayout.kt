@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.view_flag.view.*
 import one.mixin.android.R
-import one.mixin.android.extension.dpToPx
+import one.mixin.android.extension.dp
 import one.mixin.android.extension.translationY
 
 class FlagLayout @JvmOverloads constructor(
@@ -18,7 +18,6 @@ class FlagLayout @JvmOverloads constructor(
     var bottomFlag = false
         set(value) {
             if (field != value) {
-                down_flag_layout.isVisible = value
                 field = value
                 update()
             }
@@ -45,21 +44,22 @@ class FlagLayout @JvmOverloads constructor(
         if (!bottomCountFlag && !bottomFlag && mentionCount == 0) {
             hide()
         } else {
-            show(100)
+            show()
         }
     }
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_flag, this, true)
+        orientation = VERTICAL
     }
 
-    private fun show(duration: Long = 100) {
+    private fun show() {
         if (this.translationY != 0f)
-            translationY(0f, duration)
+            translationY(0f, 100)
     }
 
     private fun hide() {
         if (this.translationY == 0f)
-            translationY(context.dpToPx(130f).toFloat(), 100)
+            translationY(130.dp.toFloat(), 100)
     }
 }

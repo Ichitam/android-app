@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/down_flag"

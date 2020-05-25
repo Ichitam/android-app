@@ -517,4 +517,7 @@ class BottomSheetViewModel @Inject internal constructor(
         userRepository.findCirclesNameByConversationId(conversationId)
 
     suspend fun findMultiUsersByIds(userIds: Set<String>) = userRepository.findMultiUsersByIds(userIds)
+
+    fun getGroupParticipantsLiveData(conversationId: String) =
+        conversationRepo.getGroupParticipantsLiveData(conversationId)
 }

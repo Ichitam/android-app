@@ -112,8 +112,8 @@ class CallActivity : BaseActivity(), SensorEventListener {
             }
         })
 
-        callState.observe(this, Observer { callInfo ->
-            when (callInfo.callState) {
+        callState.observe(this, Observer { state ->
+            when (state) {
                 CallService.CallState.STATE_DIALING -> {
                     volumeControlStream = AudioManager.STREAM_VOICE_CALL
                     call_cl.post { handleDialingConnecting() }

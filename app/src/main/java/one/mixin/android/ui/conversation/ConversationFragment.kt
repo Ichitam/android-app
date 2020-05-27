@@ -1241,8 +1241,8 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
             requireActivity().sharedPreferences(RefreshConversationJob.PREFERENCES_CONVERSATION).putBoolean(conversationId, false)
             group_flag.isVisible = false
         }
-        callState.observe(viewLifecycleOwner, Observer { info ->
-            chat_control.calling = info.callState != CallService.CallState.STATE_IDLE
+        callState.observe(viewLifecycleOwner, Observer { state ->
+            chat_control.calling = state != CallService.CallState.STATE_IDLE
         })
         bindData()
     }

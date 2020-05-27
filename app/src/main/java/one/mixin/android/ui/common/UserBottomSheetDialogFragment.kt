@@ -576,10 +576,10 @@ class UserBottomSheetDialogFragment : MixinScrollableBottomSheetDialogFragment()
     private fun callVoice() {
         if (LinkState.isOnline(linkState.state)) {
             CallService.outgoing(
-                requireContext(), user, generateConversationId(
+                requireContext(), generateConversationId(
                     Session.getAccountId()!!,
                     user.userId
-                )
+                ), user
             )
             RxBus.publish(BotCloseEvent())
             dismiss()

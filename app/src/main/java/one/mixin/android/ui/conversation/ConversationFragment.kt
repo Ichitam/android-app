@@ -321,11 +321,19 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
             }
         }
 
-    private fun callVoice() {
+    private fun voiceCall() {
         if (LinkState.isOnline(linkState.state)) {
             createConversation {
-                CallService.outgoing(requireContext(), recipient!!, conversationId)
+                CallService.outgoing(requireContext(), conversationId, recipient!!)
             }
+        } else {
+            toast(R.string.error_no_connection)
+        }
+    }
+
+    private fun groupVoiceCall(users: ArrayList<User>) {
+        if (LinkState.isOnline(linkState.state)) {
+            CallService.outgoing(requireContext(), conversationId, users = users)
         } else {
             toast(R.string.error_no_connection)
         }
@@ -663,7 +671,7 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
                         .autoDispose(stopScope)
                         .subscribe({ granted ->
                             if (granted) {
-                                callVoice()
+                                voiceCall()
                             } else {
                                 context?.openPermissionSetting()
                             }
@@ -1963,7 +1971,7 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
                                 .request(Manifest.permission.RECORD_AUDIO)
                                 .subscribe({ granted ->
                                     if (granted) {
-                                        callVoice()
+                                        voiceCall()
                                     } else {
                                         context?.openPermissionSetting()
                                     }

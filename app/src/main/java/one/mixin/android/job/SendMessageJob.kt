@@ -16,6 +16,7 @@ import one.mixin.android.vo.MentionUser
 import one.mixin.android.vo.Message
 import one.mixin.android.vo.MessageCategory
 import one.mixin.android.vo.isCall
+import one.mixin.android.vo.isKraken
 import one.mixin.android.vo.isPlain
 import one.mixin.android.vo.isRecall
 import one.mixin.android.vo.isText
@@ -23,6 +24,7 @@ import one.mixin.android.websocket.BlazeMessage
 import one.mixin.android.websocket.BlazeMessageParam
 import one.mixin.android.websocket.ResendData
 import one.mixin.android.websocket.createCallMessage
+import one.mixin.android.websocket.createKrakenMessage
 import one.mixin.android.websocket.createParamBlazeMessage
 
 open class SendMessageJob(
@@ -147,7 +149,11 @@ open class SendMessageJob(
             mentions = getMentionData(message.id)
         )
         val blazeMessage = if (message.isCall()) {
-            createCallMessage(blazeParam)
+            if (message.isKraken()) {
+                createKrakenMessage(blazeParam)
+            } else {
+                createCallMessage(blazeParam)
+            }
         } else {
             createParamBlazeMessage(blazeParam)
         }

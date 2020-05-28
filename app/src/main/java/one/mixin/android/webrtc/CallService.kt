@@ -194,7 +194,7 @@ class CallService : Service(), PeerConnectionClient.PeerConnectionEvents {
         callState.trackId = blazeMessageData!!.messageId
         updateForegroundNotification()
         timeoutFuture = timeoutExecutor.schedule(TimeoutRunnable(this), DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
-        CallActivity.show(this, user)
+        CallActivity.show(this)
         audioManager.start(false)
     }
 
@@ -212,7 +212,7 @@ class CallService : Service(), PeerConnectionClient.PeerConnectionEvents {
         callState.isOffer = true
         updateForegroundNotification()
         timeoutFuture = timeoutExecutor.schedule(TimeoutRunnable(this), DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
-        CallActivity.show(this, user)
+        CallActivity.show(this)
         audioManager.start(true)
         getTurnServer { peerConnectionClient.createOffer(it) }
     }
@@ -225,9 +225,9 @@ class CallService : Service(), PeerConnectionClient.PeerConnectionEvents {
         updateForegroundNotification()
         audioManager.stop()
 
-        val bmd = intent.getSerializableExtra(EXTRA_BLAZE) ?: return
-        blazeMessageData = bmd as BlazeMessageData
         if (callState.isOffer) {
+            val bmd = intent.getSerializableExtra(EXTRA_BLAZE) ?: return
+            blazeMessageData = bmd as BlazeMessageData
             peerConnectionClient.setAnswerSdp(getRemoteSdp(Base64.decode(blazeMessageData!!.data)))
         } else {
             getTurnServer {

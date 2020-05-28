@@ -122,6 +122,7 @@ import one.mixin.android.media.OpusAudioRecorder
 import one.mixin.android.media.OpusAudioRecorder.Companion.STATE_NOT_INIT
 import one.mixin.android.media.OpusAudioRecorder.Companion.STATE_RECORDING
 import one.mixin.android.ui.call.CallActivity
+import one.mixin.android.ui.call.GroupUsersBottomSheetDialogFragment
 import one.mixin.android.ui.common.GroupBottomSheetDialogFragment
 import one.mixin.android.ui.common.LinkFragment
 import one.mixin.android.ui.common.UserBottomSheetDialogFragment
@@ -323,8 +324,13 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
 
     private fun voiceCall() {
         if (LinkState.isOnline(linkState.state)) {
-            createConversation {
-                CallService.outgoing(requireContext(), conversationId, recipient!!)
+            if (isGroup) {
+                GroupUsersBottomSheetDialogFragment.newInstance(conversationId)
+                    .showNow(parentFragmentManager, GroupUsersBottomSheetDialogFragment.TAG)
+            } else {
+                createConversation {
+                    CallService.outgoing(requireContext(), conversationId, recipient!!)
+                }
             }
         } else {
             toast(R.string.error_no_connection)
@@ -656,7 +662,7 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
             override fun onCallClick(messageItem: MessageItem) {
                 if (!callState.isIdle()) {
                     if (recipient != null && callState.user?.userId == recipient?.userId) {
-                        CallActivity.show(requireContext(), recipient)
+                        CallActivity.show(requireContext())
                     } else {
                         alertDialogBuilder()
                             .setMessage(getString(R.string.chat_call_warning_call))
@@ -1957,7 +1963,7 @@ class ConversationFragment : LinkFragment(), OnKeyboardShownListener, OnKeyboard
                         chat_control.reset()
                         if (!callState.isIdle()) {
                             if (recipient != null && callState.user?.userId == recipient?.userId) {
-                                CallActivity.show(requireContext(), recipient)
+                                CallActivity.show(requireContext())
                             } else {
                                 alertDialogBuilder()
                                     .setMessage(getString(R.string.chat_call_warning_call))
